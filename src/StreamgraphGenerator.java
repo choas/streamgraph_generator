@@ -6,6 +6,9 @@
  **/
 
 import processing.core.PApplet;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 public class StreamgraphGenerator extends PApplet
 {
@@ -23,11 +26,17 @@ public class StreamgraphGenerator extends PApplet
   ColorPicker coloring;
   Layer[] layers;
 
+
+  
+
+
   public void setup()
   {
     size(PApplet.parseInt(this.widthInches * this.DPI), PApplet.parseInt(this.heightInches * this.DPI));
     smooth();
     noLoop();
+
+    // set default data source, ordering, layout, and color
 
     // GENERATE DATA
     data     = new LateOnsetDataSource();
@@ -50,6 +59,63 @@ public class StreamgraphGenerator extends PApplet
     coloring = new LastFMColorPicker(this, "layers-nyt.jpg");
     //coloring = new LastFMColorPicker(this, "layers.jpg");
     //coloring = new RandomColorPicker(this);
+
+    
+    // read args and try to set new data, ordering, layout and coloring 
+
+    if (this.args != null && this.args.length > 1 && this.args[1] != null) {
+
+	System.out.println("args=" + this.args[1]);
+
+	// just add the classes to a hashmap
+	Map clazzes = new HashMap();
+	// GENERATE DATA
+	clazzes.put("LateOnsetDataSource", new LateOnsetDataSource());
+	clazzes.put("BelievableDataSource", new BelievableDataSource());
+	
+	// ORDER DATA
+	clazzes.put("LateOnsetSort", new LateOnsetSort());
+	clazzes.put("VolatilitySort", new VolatilitySort());
+	clazzes.put("InverseVolatilitySort", new InverseVolatilitySort());
+	clazzes.put("BasicLateOnsetSort", new BasicLateOnsetSort());
+	clazzes.put("NoLayerSort", new NoLayerSort());
+
+	// LAYOUT DATA
+	clazzes.put("StreamLayout", new StreamLayout());
+	clazzes.put("MinimizedWiggleLayout", new MinimizedWiggleLayout());
+	clazzes.put("ThemeRiverLayout", new ThemeRiverLayout());
+	clazzes.put("StackLayout", new StackLayout());
+
+	// COLOR DATA
+	clazzes.put("LastFMColorPickerNYT", new LastFMColorPicker(this, "layers-nyt.jpg"));
+	clazzes.put("LastFMColorPicker", new LastFMColorPicker(this, "layers.jpg"));
+	clazzes.put("RandomColorPicker", new RandomColorPicker(this));
+	
+	String[] aargs = this.args[1].split(",");
+	for (int a=0; a<aargs.length; a++) {
+	    // find the class
+	    Object o = clazzes.get(aargs[a]);
+	    if (o instanceof DataSource) {
+		data = (DataSource) o;
+	    } else if (o instanceof LayerSort) {
+		ordering = (LayerSort) o;
+	    } else if (o instanceof LayerLayout) {
+		layout = (LayerLayout) o;
+	    } else if (o instanceof ColorPicker) {
+		coloring = (ColorPicker) o;
+	    } else if (aargs[a].equals("--help")) {
+		// print all classes (unordered)
+		System.out.println("following classes can be used:");
+		Object[] keys = clazzes.keySet().toArray();
+		for (int s=0; s < keys.length; s++) {
+		    System.out.println("  " + (String)keys[s]);
+		}
+	    } else {
+		System.out.println("unknown class " + aargs[a] + " (use --help to get a list of classes)");
+	    }
+	}
+    } // this.args
+
 
     //=========================================================================
 
@@ -180,6 +246,10 @@ public class StreamgraphGenerator extends PApplet
   }
 
   public static void main(String[] paramArrayOfString) {
-    PApplet.main(new String[] { "--bgcolor=#DFDFDF", "StreamgraphGenerator" });
+      String param = "";
+      if (paramArrayOfString.length > 0 && paramArrayOfString[0].length() > 0) {
+	  param = paramArrayOfString[0];
+      }
+      PApplet.main(new String[] { "--bgcolor=#DFDFDF", "StreamgraphGenerator", param});
   }
 }

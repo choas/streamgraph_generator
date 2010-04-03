@@ -26,10 +26,37 @@ To start the application just type 'ant'.
 
 This will compile and run the application.
 
-Take a look at src/StreamgraphGenerator.java, there are possible variations for data generation, ordering, layout and coloring.
+There are also three demo targets:
+ant demo1
+ant demo2
+ant demo3
+ant all  (show all three demos)
+
+--------------------------------------------------------------------------------
+
+Demo application can also started from command line.
+
+*nix:
+java -cp lib/core.jar:target/classes StreamgraphGenerator --help
+
+Windows:
+java -cp lib/core.jar;target/classes StreamgraphGenerator --help
+
+--help will list all possible variations for data generation, ordering, layout 
+       and coloring. This list is unordered.
+
+example:
+java -cp lib/core.jar:target/classes StreamgraphGenerator VolatilitySort,ThemeRiverLayout,LastFMColorPicker
+
+ant -Dargs=VolatilitySort,ThemeRiverLayout
 
 --------------------------------------------------------------------------------
 Changelog
+
+
+2010-04-03
+* parameters (StreamgraphGenerator.java)
+* added demo targets (build.xml)
 
 
 2010-04-03

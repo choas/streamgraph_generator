@@ -4,3 +4,37 @@ Stacked Graphs - Geometry & Aesthetics
 It is published here as an educational library, to provide code examples to support the paper.
 
 This code is copyright under the BSD license.
+
+
+--------------------------------------------------------------------------------
+
+http://github.com/choas/streamgraph_generator
+
+* Forked from http://github.com/leebyron/streamgraph_generator
+* Streamgraph Generator is based on Java and Processing: http://processing.org
+* Added support for a standalone demo application.
+* The processing environment is not needed.
+* Processing is an open source programming language and environment for people 
+  who want to program images, animation, and interactions.
+
+see also
+http://www.leebyron.com/else/streamgraph/
+
+--------------------------------------------------------------------------------
+
+To start the application just type 'ant'. 
+
+This will compile and run the application.
+
+Take a look at src/StreamgraphGenerator.java, there are possible variations for data generation, ordering, layout and coloring.
+
+--------------------------------------------------------------------------------
+Changelog
+
+
+2010-04-03
+* forked http://github.com/leebyron/streamgraph_generator
+* moved *.java and *.pde to src
+* generated StreamgraphGenerator.java from streamgraph_generator.pde
+* added processing core library
+* added build.xml
